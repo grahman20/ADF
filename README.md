@@ -3,7 +3,7 @@ Adaptive Decision Forest(ADF) is an incremental machine learning framework calle
 
 <h2>Reference</h2>
  
-Rahman M. G. and Islam M. Z. (2021): Adaptive Decision Forest: An Incremental Machine Learning Framework. </li> 
+Rahman, M.G., & Islam, M.Z. (2021). Adaptive Decision Forest: An Incremental Machine Learning Framework. ArXiv, abs/2101.11828.
   
 @author Md Geaur Rahman <gea.bau.edu.bd>
 
