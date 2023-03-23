@@ -59,7 +59,7 @@ public class AdaptiveDecisionForest extends AbstractClassifier implements MultiC
                                                                         CapabilitiesHandler{
     @Override
     public String getPurposeString() {
-        return "Adaptive Decision Forest (ADF) algorithm for Incremental Learning on Batch Data by Rahman and Islam (2020).";
+        return "Rahman, M. G., and Islam, M. Z. (2022): Adaptive Decision Forest: An Incremental Machine Learning Framework, Pattern Recognition, pg. 108345, vol. 122, ISSN 0031-3203. DOI: https://doi.org/10.1016/j.patcog.2021.108345";
     }
     
     private static final long serialVersionUID = 1L;
@@ -146,7 +146,7 @@ public class AdaptiveDecisionForest extends AbstractClassifier implements MultiC
        if(padding.equals("")) padding=getMethodName();
        File logFile=new File(batchFiles);
        String [][]bFile=ForestFunctions.readFileAs2DArray(logFile);
-       String header="Batch, TestAccuracy, TotalTime, PFAccuracy, PFTime, AFAccuracy,AFTime, TFAccuracy, TFTime, Staus";       
+       String header="Batch, Accuracy, Time (ms)";       
        String accuracyFile=ForestFunctions.changedFileName(ForestFunctions.changedFileExtension(logFile.getAbsolutePath(),"csv"),"_accuracy"+padding);       
        File outF=new File(accuracyFile);
        ForestFunctions.writeToFile(outF, md+"\n"+header);
@@ -183,13 +183,12 @@ public class AdaptiveDecisionForest extends AbstractClassifier implements MultiC
                 long []trainTime=adfl.getExeTime();
                 float []trainAccuracy=adfl.getAccuracy();
                 time=adfl.getTotalTime();
-                batchStatus=", "+trainAccuracy[1]+","+trainTime[1]+", "
-                            +trainAccuracy[2]+","+trainTime[2]+", "
-                            +trainAccuracy[3]+","+trainTime[3]+", "+adfl.getStatus();
+                batchStatus=", "+trainAccuracy[1]+","+trainTime[1];
                 
                 NumberFormat formatter = new DecimalFormat("#0.000");  
-                String acc="\n"+bFile[i][0]+", "+formatter.format(accuracy)+"%,"+time+batchStatus;
-                System.out.println(acc);
+                String acc="\n"+bFile[i][0]+", "+formatter.format(accuracy)+"%,"+time;
+                String acc1="\n"+bFile[i][0]+",Accuracy= "+formatter.format(accuracy)+"%, Time (ms)= "+time;
+                System.out.println(acc1);
                 ForestFunctions.appendToFile(outF, acc);
             }
     }   
@@ -463,8 +462,8 @@ public class AdaptiveDecisionForest extends AbstractClassifier implements MultiC
             {
                 perturbedRatio=(float)totalPerturbed/(float)totalLeaves;
             }
-            System.out.println(msg+": Total perturbed leaves: "+totalPerturbed+",  total leaves: "+totalLeaves+
-                    ", perturbed ratio: "+perturbedRatio+" and max tree size: "+maxTreeSize);
+//            System.out.println(msg+": Total perturbed leaves: "+totalPerturbed+",  total leaves: "+totalLeaves+
+//                    ", perturbed ratio: "+perturbedRatio+" and max tree size: "+maxTreeSize);
             if(perturbedRatio>repairableThreshold)
             {
                 isRepairable=false;
