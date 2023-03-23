@@ -1,7 +1,21 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *    EvaluateModelsForBatchData.java
+ *    Copyright (C) 2020 Charles Sturt University, Bathurst, NSW, Australia
+ *    @author Md Geaur Rahman (grahman@csu.edu.au)
+ *
+ *    This program is free software; you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation; either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *    This program is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License
+ *    along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *    
  */
 package moa.tasks;
 
@@ -54,7 +68,7 @@ public class EvaluateModelsForBatchData extends ClassificationMainTask implement
 
     @Override
     public String getPurposeString() {
-        return "Evaluation of models of Incremental Learning for Batch training and testing Data by Rahman and Islam (2020).";
+        return "Evaluation of Incremental Learning models which are capable to handle batch training and testing data - Rahman and Islam (2020).";
     }
 
     private static final long serialVersionUID = 1L;
@@ -105,85 +119,7 @@ public class EvaluateModelsForBatchData extends ClassificationMainTask implement
         return LearningEvaluation.class;
     }
 
-//    @Override
-//    public Object doMainTask(TaskMonitor monitor, ObjectRepository repository) {
-//        Learner model = (Learner) getPreparedClassOption(this.modelOption);
-//        ExampleStream stream = (ExampleStream) getPreparedClassOption(this.batchOption);
-//        
-//        LearningPerformanceEvaluator evaluator = (LearningPerformanceEvaluator) getPreparedClassOption(this.evaluatorOption);
-//        LearningCurve learningCurve = new LearningCurve("learning evaluation instances");
-//        int maxInstances =1000000;// this.maxInstancesOption.getValue();
-//        long instancesProcessed = 0;
-//        monitor.setCurrentActivity("Evaluating model...", -1.0);
-//
-//        //File for output predictions
-//        File outputPredictionFile = this.outputPredictionFileOption.getFile();
-//        PrintStream outputPredictionResultStream = null;
-//        if (outputPredictionFile != null) {
-//            try {
-//                if (outputPredictionFile.exists()) {
-//                    outputPredictionResultStream = new PrintStream(
-//                            new FileOutputStream(outputPredictionFile, true), true);
-//                } else {
-//                    outputPredictionResultStream = new PrintStream(
-//                            new FileOutputStream(outputPredictionFile), true);
-//                }
-//            } catch (Exception ex) {
-//                throw new RuntimeException(
-//                        "Unable to open prediction result file: " + outputPredictionFile, ex);
-//            }
-//        }
-//        while (stream.hasMoreInstances()
-//                && ((maxInstances < 0) || (instancesProcessed < maxInstances))) {
-//            Example testInst = (Example) stream.nextInstance();//.copy();
-//            int trueClass = (int) ((Instance) testInst.getData()).classValue();
-//            //testInst.setClassMissing();
-//            double[] prediction = model.getVotesForInstance(testInst);
-//            //evaluator.addClassificationAttempt(trueClass, prediction, testInst
-//            //		.weight());
-//            if (outputPredictionFile != null) {
-//                outputPredictionResultStream.println(Utils.maxIndex(prediction) + "," +(
-//                        ((Instance) testInst.getData()).classIsMissing() == true ? " ? " : trueClass));
-//            }
-//            evaluator.addResult(testInst, prediction);
-//            instancesProcessed++;
-//
-//            if (stream.hasMoreInstances() == false) {
-//	            learningCurve.insertEntry(new LearningEvaluation(
-//	                    new Measurement[]{
-//	                        new Measurement(
-//	                        "learning evaluation instances",
-//	                        instancesProcessed)
-//	                    },
-//	                    evaluator, model));
-//            }
-//            if (instancesProcessed % INSTANCES_BETWEEN_MONITOR_UPDATES == 0) {
-//                if (monitor.taskShouldAbort()) {
-//                    return null;
-//                }
-//                long estimatedRemainingInstances = stream.estimatedRemainingInstances();
-//                if (maxInstances > 0) {
-//                    long maxRemaining = maxInstances - instancesProcessed;
-//                    if ((estimatedRemainingInstances < 0)
-//                            || (maxRemaining < estimatedRemainingInstances)) {
-//                        estimatedRemainingInstances = maxRemaining;
-//                    }
-//                }
-//                monitor.setCurrentActivityFractionComplete(estimatedRemainingInstances < 0 ? -1.0
-//                        : (double) instancesProcessed
-//                        / (double) (instancesProcessed + estimatedRemainingInstances));
-//                if (monitor.resultPreviewRequested()) {
-//                    monitor.setLatestResultPreview(learningCurve.copy());
-//                }
-//            }
-//        }
-//        if (outputPredictionResultStream != null) {
-//            outputPredictionResultStream.close();
-//        }
-//        return learningCurve;
-//    }
-   
-   @Override
+    @Override
     public Object doMainTask(TaskMonitor monitor, ObjectRepository repository) {
          Classifier model = (Classifier) getPreparedClassOption(this.modelOption);
          File logFile = this.trainArffOption.getFile();
@@ -191,8 +127,8 @@ public class EvaluateModelsForBatchData extends ClassificationMainTask implement
          String modelName ="";
          String []options=null;
          try{
-         options=moa.core.Utils.splitOptions(modelOption.getValueAsCLIString());
-         modelName = options[0];
+            options=moa.core.Utils.splitOptions(modelOption.getValueAsCLIString());
+            modelName = options[0];
          }
          catch(Exception e)
          {
@@ -203,16 +139,13 @@ public class EvaluateModelsForBatchData extends ClassificationMainTask implement
          System.out.println("Log file: "+logFile.getAbsolutePath());
          if(modelName.equals("meta.AdaptiveDecisionForest"))
          {
-         AdaptiveDecisionForest adf=new AdaptiveDecisionForest();
-         adf.learnFromBatchDataset(logFile.getAbsolutePath(), classIndex, options,"");
+             AdaptiveDecisionForest adf=new AdaptiveDecisionForest();
+             adf.learnFromBatchDataset(logFile.getAbsolutePath(), classIndex, options,"");
          }
-         else{
+         else
+         {
          String [][]bFile=readFileAs2DArray(logFile);
          String header="Batch, Accuracy, ExecutionTime";
-//         if(modelName.equals("meta.AdaptiveDecisionForestRF") || modelName.equals("meta.AdaptiveDecisionForestHT"))
-//         {
-//             header="Batch, TestAccuracy, TotalTime, PFAccuracy, PFTime, AFAccuracy,AFTime, TFAccuracy, TFTIme, Staus";
-//         }
          String accuracyFile=changedFileName(logFile.getAbsolutePath(),"_accuracy");
          File outF=new File(accuracyFile);
          writeToFile(outF, header);
@@ -229,41 +162,16 @@ public class EvaluateModelsForBatchData extends ClassificationMainTask implement
                 System.out.println("Processing file: "+trainFile);
                 long time=0;
                 float accuracy=0.0f;
-//                if(modelName.equals("meta.AdaptiveDecisionForest"))
-//                {
-//                    time=buildADFClassifier(isFB,trainFile,classIndex,learnerFile,options,0);
-//                    accuracy=adfAccuracy(learnerFile,testFile);
-//                }
-//                else if(modelName.equals("meta.AdaptiveDecisionForestHT"))
-//                {
-//                    time=buildADFClassifier(isFB,trainFile,classIndex,learnerFile,options,2);                                       
-//                    accuracy=adfRFAccuracy(learnerFile,testFile,classIndex,2);
-//                    time=totalTime;
-//                    batchStatus=", "+trainAccuracy[3]+","+exetime[3]+", "
-//                            +trainAccuracy[1]+","+exetime[1]+", "
-//                            +trainAccuracy[2]+","+exetime[2]+", "+status;
-//                }
-//                else if(modelName.equals("meta.AdaptiveDecisionForestRF"))
-//                {
-//                    time=buildADFClassifier(isFB,trainFile,classIndex,learnerFile,options,1);                                       
-//                    accuracy=adfRFAccuracy(learnerFile,testFile,classIndex,1);
-//                    time=totalTime;
-//                    batchStatus=", "+trainAccuracy[3]+","+exetime[3]+", "
-//                            +trainAccuracy[1]+","+exetime[1]+", "
-//                            +trainAccuracy[2]+","+exetime[2]+", "+status;
-//                }
-//                else{
-                     long sTime=0, eTime=0;
-                     sTime = System.currentTimeMillis();
-                     ArffFileStream trainArffs=new ArffFileStream(trainFile,classIndex);
-                     model=buildClassifier(isFB,model,trainArffs);
-                     writeToFile(new File(learnerFile),model.toString());
-                     ArffFileStream testArffs=new ArffFileStream(testFile,classIndex);
-                     accuracy=calculateAccuracy(model, testArffs);
-                     eTime = System.currentTimeMillis();
-                     time =eTime-sTime;
-//                }
-                System.out.println("Accuracy: "+accuracy+", time: "+time);
+                long sTime=0, eTime=0;
+                sTime = System.currentTimeMillis();
+                ArffFileStream trainArffs=new ArffFileStream(trainFile,classIndex);
+                model=buildClassifier(isFB,model,trainArffs);
+                eTime = System.currentTimeMillis();
+                writeToFile(new File(learnerFile),model.toString());
+                ArffFileStream testArffs=new ArffFileStream(testFile,classIndex);
+                accuracy=calculateAccuracy(model, testArffs);
+                time =eTime-sTime;
+                System.out.println("Accuracy: "+accuracy+", time (ms): "+time);
                 NumberFormat formatter = new DecimalFormat("#0.000");  
                 String acc="\n"+bFile[i][0]+", "+formatter.format(accuracy)+"%,"+time+batchStatus;
                 appendToFile(outF, acc);
@@ -285,7 +193,7 @@ public class EvaluateModelsForBatchData extends ClassificationMainTask implement
          }       
        return learner;
    }
-    public float calculateAccuracy(Classifier learner, ArffFileStream testArffs)
+   public float calculateAccuracy(Classifier learner, ArffFileStream testArffs)
    {
        int numberSamplesCorrect = 0;
        int numberSamples = 0;
@@ -301,52 +209,7 @@ public class EvaluateModelsForBatchData extends ClassificationMainTask implement
         float accuracy = 100.0f * (float) numberSamplesCorrect/ (float) numberSamples;
         return accuracy;
    } 
-//    public long buildADFClassifier(boolean isFB, String trainArffs, int classIndex, String outputFile, String []options, int adfTask)
-//   {
-//       long t=0;
-//       if(adfTask==0)
-//       {
-//           AdaptiveDecisionForestSysFor adf=new AdaptiveDecisionForestSysFor();
-//           t=adf.learnFromDataSet(isFB, trainArffs, classIndex,outputFile,options);
-//       }
-//       else if(adfTask==1){
-//            AdaptiveDecisionForestRF adfrf=new AdaptiveDecisionForestRF();
-//            t=adfrf.learnFromDataSet(isFB, trainArffs, classIndex,outputFile,options);
-//            status=adfrf.getStatus();
-//            totalTime=adfrf.getTotalTime();
-//            exetime=adfrf.getTime();
-//            trainAccuracy=adfrf.getAccuracy();
-//       }
-//       else{
-//            AdaptiveDecisionForestHT adfht=new AdaptiveDecisionForestHT();
-//            t=adfht.learnFromDataSet(isFB, trainArffs, classIndex,outputFile,options);
-//            status=adfht.getStatus();
-//            totalTime=adfht.getTotalTime();
-//            exetime=adfht.getTime();
-//            trainAccuracy=adfht.getAccuracy();
-//       }
-//       return t;
-//   }
-//   
-//   public float adfAccuracy(String treeFile, String testDataFile)
-//   {
-//       AdaptiveDecisionForestSysFor adf=new AdaptiveDecisionForestSysFor(); 
-//       return adf.calculateAccuracy(treeFile, testDataFile);
-//   } 
-//   
-//   public float adfRFAccuracy(String treeFile, String testDataFile, int classIndex, int adfTask)
-//   {
-//       if(adfTask==1)
-//       {
-//        AdaptiveDecisionForestRF adf_rf=new AdaptiveDecisionForestRF(); 
-//        return adf_rf.calculateAccuracy(treeFile, testDataFile,classIndex);
-//       }
-//       else
-//       {
-//        AdaptiveDecisionForestHT adf_ht=new AdaptiveDecisionForestHT(); 
-//        return adf_ht.calculateAccuracy(treeFile, testDataFile,classIndex);
-//       }
-//   } 
+
    
     /**
      * Reads the contents of the file to a <code>String</code> array, where
