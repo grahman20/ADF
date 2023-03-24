@@ -1,5 +1,5 @@
 <h2>ADF</h2>
-Adaptive Decision Forest(ADF) is an incremental machine learning framework called to produce a decision forest to classify new records. ADF is capable to classify new records even if they are associated with previously unseen classes. ADF also is capable of identifying and handling concept drift; it, however, does not forget previously gained knowledge. Moreover, ADF is capable of handling big data if the data can be divided into batches. 
+Adaptive Decision Forest (ADF) is an incremental machine learning framework for handling steaming data that arrive batches over the time. ADF is capable to classify new records even if they are associated with previously unseen classes. ADF also is capable of identifying and handling concept drift; it, however, does not forget previously gained knowledge. Moreover, ADF is capable of handling big data if the data can be divided into batches. 
 
 <h2>How to use ADF into MOA framework</h2>
 
