@@ -1,5 +1,0 @@
-trainbatch1.arff,testbatch1.arff
-trainbatch2.arff,testbatch2.arff
-trainbatch3.arff,testbatch3.arff
-trainbatch4.arff,testbatch4.arff
-trainbatch5.arff,testbatch5.arff
