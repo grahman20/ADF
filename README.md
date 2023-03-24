@@ -9,7 +9,8 @@ Please find the "ADF Manual.pdf" file (given in the repository) which illustrate
  
 Rahman, M. G., and Islam, M. Z. (2022): Adaptive Decision Forest: An Incremental Machine Learning Framework, Pattern Recognition, pg. 108345, vol. 122, ISSN 0031-3203. DOI: https://doi.org/10.1016/j.patcog.2021.108345.
 
-<h2>BibTex</h2>
+## BibTeX
+```
 @article{RAHMAN2022108345,
 title = {Adaptive Decision Forest: An incremental machine learning framework},
 journal = {Pattern Recognition},
@@ -22,7 +23,7 @@ url = {https://www.sciencedirect.com/science/article/pii/S0031320321005252},
 author = {Md Geaur Rahman and Md Zahidul Islam},
 keywords = {Incremental learning, Decision forest algorithm, Concept drift, Big data, Online learning}
 }
-
+```
 
 @author Gea Rahman <https://csusap.csu.edu.au/~grahman/>
 
